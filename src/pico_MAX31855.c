@@ -1,30 +1,16 @@
 /*!
- * @file pico_CMAX31855.c
+ * @file pico_MAX31855.c
  *
- * @mainpage Port of Adafruit MAX31855 Thermocouple Arduino library for Raspberry Pico C SDK
+ * @mainpage MAX31855 Thermocouple library C for Raspberry Pico C SDK
  *
  * @section intro_sec Introduction
  *
- * This is the documentation for the port of Adafruit's MAX31855 thermocouple library
- * for original Adafruit documentation see Adafruit Introduction section of this documentation
- *
- * @section adafruit_intro_sec Adafruit Introduction
- *
- * This is the documentation for Adafruit's MAX31855 thermocouple breakout
- * driver for the Arduino platform.  It is designed specifically to work with
- * the Adafruit MAX31855 breakout: https://www.adafruit.com/products/269
- *
- * This breakout uses SPI to communicate, 3 pins are required
- * to interface with the breakout.
- *
- * Adafruit invests time and resources providing this open source code,
- * please support Adafruit and open-source hardware by purchasing
- * products from Adafruit!
+ * This is the documentation for the MAX31855 Thermocouple C library for
+ * for Raspberry Pico C SDK.
  *
  * @section author Author
  *
- * Ported by Lazarewicz Julien lazaj30@gmail.com
- * Original library written by Limor Fried/Ladyada for Adafruit Industries.
+ * Lazarewicz Julien lazaj30@gmail.com
  *
  * @section license License
  *
@@ -34,16 +20,16 @@
 
 #include "../include/pico_MAX31855.h"
 
-/**************************************************************************/
 /*!
-	@brief  Instantiates a new pico_MAX31855 structure using hardware SPI.
-
-	@param thermocouple A pointer to pico_MAX31855 structure.
-	@param _mosi The pin to use for SPI Mosi.
-	@param _clk The pin to use for SPI Clock
-	@param _cs The pin to use for SPI Chip Select.
-*/
-/**************************************************************************/
+ *
+ * @brief  Initialize a new pico_MAX31855 structure using hardware SPI.
+ *
+ * @param thermocouple A pointer to pico_MAX31855 structure.
+ * @param _mosi The pin to use for SPI Mosi.
+ * @param _clk The pin to use for SPI Clock
+ * @param _cs The pin to use for SPI Chip Select.
+ *
+ */
 bool pico_MAX31855_init(struct pico_MAX31855* thermocouple, uint _mosi, uint _clk, uint _cs)
 {
 	thermocouple->mosi_pin	  = _mosi;
@@ -54,14 +40,14 @@ bool pico_MAX31855_init(struct pico_MAX31855* thermocouple, uint _mosi, uint _cl
 	return true;
 }
 
-/**************************************************************************/
 /*!
-	@brief  Setup the HW
-
-	@param thermocouple A pointer to pico_MAX31855 structure.
-	@return True if the device was successfully initialized, otherwise false.
-*/
-/**************************************************************************/
+ *
+ * @brief Setup the HW
+ *
+ * @param thermocouple A pointer to pico_MAX31855 structure.
+ * @return True if the device was successfully initialized, otherwise false.
+ *
+ */
 bool pico_MAX31855_begin(struct pico_MAX31855* thermocouple)
 {
 	spi_init(spi0, 1000 * 1000);
@@ -79,14 +65,14 @@ bool pico_MAX31855_begin(struct pico_MAX31855* thermocouple)
 	return thermocouple->initialized;
 }
 
-/**************************************************************************/
 /*!
-	@brief  Read the internal temperature.
-
-	@param thermocouple A pointer to pico_MAX31855 structure.
-	@return The internal temperature in degrees Celsius.
-*/
-/**************************************************************************/
+ *
+ * @brief  Read the internal temperature.
+ * *
+ * @param thermocouple A pointer to pico_MAX31855 structure.
+ * @return The internal temperature in degrees Celsius.
+ *
+ */
 double pico_MAX31855_readInternal(struct pico_MAX31855* thermocouple)
 {
 	uint32_t v;
@@ -97,7 +83,6 @@ double pico_MAX31855_readInternal(struct pico_MAX31855* thermocouple)
 	{
 		return 255;
 	}
-
 
 	// ignore bottom 4 bits - they're just thermocouple data
 	v >>= 4;
@@ -116,14 +101,14 @@ double pico_MAX31855_readInternal(struct pico_MAX31855* thermocouple)
 	return internal;
 }
 
-/**************************************************************************/
 /*!
-	@brief  Read the thermocouple temperature.
-
-	@param thermocouple A pointer to pico_MAX31855 structure.
-	@return The thermocouple temperature in degrees Celsius.
-*/
-/**************************************************************************/
+ *
+ *	@brief  Read the thermocouple temperature.
+ *
+ *	@param thermocouple A pointer to pico_MAX31855 structure.
+ *	@return The thermocouple temperature in degrees Celsius.
+ *
+ */
 double pico_MAX31855_readCelsius(struct pico_MAX31855* thermocouple)
 {
 	int32_t v;
@@ -160,28 +145,28 @@ double pico_MAX31855_readCelsius(struct pico_MAX31855* thermocouple)
 	return centigrade;
 }
 
-/**************************************************************************/
 /*!
-	@brief  Read the error state.
-
-	@param thermocouple A pointer to pico_MAX31855 structure.
-	@return The error state.
-*/
-/**************************************************************************/
+ *
+ *	@brief  Read the error state.
+ *
+ *	@param thermocouple A pointer to pico_MAX31855 structure.
+ *	@return The error state.
+ *
+ */
 uint8_t pico_MAX31855_readError(struct pico_MAX31855* thermocouple)
 {
 	uint8_t e = pico_MAX31855_spiread32(thermocouple) & 0x7;
 	return e;
 }
 
-/**************************************************************************/
 /*!
-	@brief  Read the thermocouple temperature.
-
-	@param thermocouple A pointer to pico_MAX31855 structure.
-	@return The thermocouple temperature in degrees Fahrenheit.
-*/
-/**************************************************************************/
+ *
+ *	@brief  Read the thermocouple temperature.
+ *
+ *	@param thermocouple A pointer to pico_MAX31855 structure.
+ *	@return The thermocouple temperature in degrees Fahrenheit.
+ *
+ */
 double pico_MAX31855_readFahrenheit(struct pico_MAX31855* thermocouple)
 {
 	float f = 0;
@@ -206,31 +191,31 @@ double pico_MAX31855_readFahrenheit(struct pico_MAX31855* thermocouple)
 	}
 }
 
-/**************************************************************************/
 /*!
-	@brief  Set the faults to check when reading temperature. If any set
-	faults occur, temperature reading will return NAN.
-
-	@param thermocouple A pointer to pico_MAX31855 structure.
-	@param faults Faults to check. Use logical OR combinations of preset
-	fault masks: MAX31855_FAULT_OPEN, MAX31855_FAULT_SHORT_GND,
-	MAX31855_FAULT_SHORT_VCC. Can also enable/disable all fault checks
-	using: MAX31855_FAULT_ALL or MAX31855_FAULT_NONE.
-*/
-/**************************************************************************/
+ *
+ *	@brief  Set the faults to check when reading temperature. If any set
+ *	faults occur, temperature reading will return NAN.
+ *
+ * 	@param thermocouple A pointer to pico_MAX31855 structure.
+ *	@param faults Faults to check. Use logical OR combinations of preset
+ *	fault masks: MAX31855_FAULT_OPEN, MAX31855_FAULT_SHORT_GND,
+ *	MAX31855_FAULT_SHORT_VCC. Can also enable/disable all fault checks
+ *	using: MAX31855_FAULT_ALL or MAX31855_FAULT_NONE.
+ *
+ */
 void pico_MAX31855_setFaultChecks(struct pico_MAX31855* thermocouple, uint8_t faults)
 {
 	thermocouple->faultMask = faults & 0x07;
 }
 
-/**************************************************************************/
 /*!
-	@brief  Read 4 bytes (32 bits) from breakout over SPI.
-
-	@param thermocouple A pointer to pico_MAX31855 structure.
-	@return The raw 32 bit value read.
-*/
-/**************************************************************************/
+ *
+ *	@brief  Read 4 bytes (32 bits) from breakout over SPI.
+ *
+ *	@param thermocouple A pointer to pico_MAX31855 structure.
+ *	@return The raw 32 bit value read.
+ *
+ */
 uint32_t pico_MAX31855_spiread32(struct pico_MAX31855* thermocouple)
 {
 	uint32_t d = 0;
@@ -260,41 +245,40 @@ uint32_t pico_MAX31855_spiread32(struct pico_MAX31855* thermocouple)
 	return d;
 }
 
-/**************************************************************************/
 /*!
-	@brief  Set SPI Chip select PIN to low.
-
-	@param thermocouple A pointer to pico_MAX31855 structure.
-*/
-/**************************************************************************/
-void pico_MAX31855_cs_select(struct pico_MAX31855* thermocouple)
+ *
+ *	@brief  Set SPI Chip select PIN to low.
+ *
+ *	@param thermocouple A pointer to pico_MAX31855 structure.
+ *
+ */
+static inline void pico_MAX31855_cs_select(struct pico_MAX31855* thermocouple)
 {
 	asm volatile("nop \n nop \n nop");
 	gpio_put(thermocouple->cs_pin, 0);	// Active low
 	asm volatile("nop \n nop \n nop");
 }
 
-/**************************************************************************/
 /*!
-	@brief  Set SPI Chip select PIN to high.
-
-	@param thermocouple A pointer to pico_MAX31855 structure.
-*/
-/**************************************************************************/
-void pico_MAX31855_cs_deselect(struct pico_MAX31855* thermocouple)
+ *
+ *	@brief  Set SPI Chip select PIN to high.
+ *
+ *	@param thermocouple A pointer to pico_MAX31855 structure.
+ *
+ */
+static inline void pico_MAX31855_cs_deselect(struct pico_MAX31855* thermocouple)
 {
 	asm volatile("nop \n nop \n nop");
 	gpio_put(thermocouple->cs_pin, 1);
 	asm volatile("nop \n nop \n nop");
 }
 
-/**************************************************************************/
 /*!
-	@brief  Print on debug output the string value for MAX31855 error.
-
-	@param thermocouple A pointer to pico_MAX31855 structure.
-*/
-/**************************************************************************/
+ *
+ *	@brief  Print on debug output the string value for MAX31855 error.
+ *	@param thermocouple A pointer to pico_MAX31855 structure.
+ *
+ */
 void pico_MAX31855_printError(struct pico_MAX31855* thermocouple)
 {
 	uint8_t e = pico_MAX31855_readError(thermocouple);

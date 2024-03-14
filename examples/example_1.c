@@ -1,6 +1,5 @@
 #include "pico/stdlib.h"
-#include <stdio.h>
-#include <boards/adafruit_feather_rp2040.h>
+#include "stdio.h"
 #include "../include/pico_MAX31855.h"
 
 int main()
@@ -21,17 +20,10 @@ int main()
 	// Initialize chosen serial port
 	stdio_init_all();
 
-	// pico_MAX31855 thermo(10);
-
 	// Loop forever
 	while (true)
 	{
-		// Blink LED
-		printf("Blinking!\r\n");
 		gpio_put(led_pin, true);
-		sleep_ms(1000);
-		gpio_put(led_pin, false);
-		sleep_ms(1000);
 
 		t_internal = pico_MAX31855_readInternal(&thk0);
 
@@ -44,9 +36,9 @@ int main()
 			printf("Internal temperature : %fC\r\n", t_internal);
 		}
 
-		sleep_ms(3000);
-
-		// printf("Celsius temperature : %fC\r\n", pico_MAX31855_readC(&thk0));
+		gpio_put(led_pin, false);
+		sleep_ms(1500);
+		gpio_put(led_pin, true);
 
 		t_celsius = pico_MAX31855_readCelsius(&thk0);
 
@@ -66,7 +58,9 @@ int main()
 			pico_MAX31855_printError(&thk0);
 		}
 
-		sleep_ms(3000);
+		gpio_put(led_pin, false);
+		sleep_ms(1500);
+		gpio_put(led_pin, true);
 
 		// printf("Celsius temperature : %fC\r\n", pico_MAX31855_readC(&thk0));
 
@@ -87,5 +81,9 @@ int main()
 			printf("Fahrenheit temperature : %fF\r\n", t_fahrenheit);
 			pico_MAX31855_printError(&thk0);
 		}
+		gpio_put(led_pin, false);
+
+		sleep_ms(1500);
+		gpio_put(led_pin, false);
 	}
 }
