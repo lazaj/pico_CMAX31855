@@ -1,6 +1,14 @@
+/*
+This example use pico_MAX31855_init_adv() to init MAX31855 IC
+It uses spi0, SPI baudrate 1 Mhz and board definition for
+PICO_DEFAULT_SPI_RX_PIN and PICO_DEFAULT_SPI_SCK_PIN.
+*/
+
 #include "pico/stdlib.h"
 #include "stdio.h"
 #include "../include/pico_MAX31855.h"
+
+#define SPI0_CS_PIN 10
 
 int main()
 {
@@ -10,7 +18,8 @@ int main()
 	double	   t_fahrenheit;
 
 	struct pico_MAX31855 thk0;
-	pico_MAX31855_init(&thk0, PICO_DEFAULT_SPI_RX_PIN, PICO_DEFAULT_SPI_SCK_PIN, 10);
+	pico_MAX31855_init(
+		&thk0, spi0, 1000000, PICO_DEFAULT_SPI_RX_PIN, PICO_DEFAULT_SPI_SCK_PIN, SPI0_CS_PIN);
 	pico_MAX31855_begin(&thk0);
 
 	// Initialize LED pin

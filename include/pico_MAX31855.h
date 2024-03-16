@@ -24,6 +24,8 @@
 #include "pico/stdlib.h"
 #include <stdio.h>
 
+#define MAX31855_LIB_VERSION "0.0.1"
+
 #define MAX31855_FAULT_NONE (0x00)		 ///< Disable all fault checks
 #define MAX31855_FAULT_OPEN (0x01)		 ///< Enable open circuit fault check
 #define MAX31855_FAULT_SHORT_GND (0x02)	 ///< Enable short to GND fault check
@@ -44,11 +46,13 @@
 
 struct pico_MAX31855
 {
-	bool	initialized;  ///< initialized is TRUE if the driver is initialized or FALSE if not.
-	uint8_t faultMask;	  ///< faultMask is the mask for error retrieving.
-	uint	cs_pin;		  ///< SPI Chip select hardware pin.
-	uint	mosi_pin;	  ///< SPI MOSI hardware pin.
-	uint	clk_pin;	  ///< SPI clock hardware pin
+	bool		initialized;  ///< initialized is TRUE if the driver is initialized or FALSE if not.
+	uint8_t		faultMask;	  ///< faultMask is the mask for error retrieving.
+	uint		cs_pin;		  ///< SPI Chip select hardware pin.
+	uint		mosi_pin;	  ///< SPI MOSI hardware pin.
+	uint		clk_pin;	  ///< SPI clock hardware pin.
+	uint		spi_baudrate;  ///< SPI baudrate, maximum 5 Mhz.
+	spi_inst_t* spi_device;	   ///< SPI instance spi0 or spi1.
 };
 
 /*!
@@ -56,12 +60,19 @@ struct pico_MAX31855
  * @brief  Initialize a new pico_MAX31855 structure using hardware SPI.
  *
  * @param thermocouple A pointer to pico_MAX31855 structure.
+ * @param _spi_device A pointer to spi_inst_t, spi0 or spi1.
+ * @param _spi_baudrate Value of the SPI baudrate, maximum value 5 Mhz.
  * @param _mosi The pin to use for SPI Mosi.
  * @param _clk The pin to use for SPI Clock
  * @param _cs The pin to use for SPI Chip Select.
  *
  */
-bool pico_MAX31855_init(struct pico_MAX31855* thermocouple, uint _mosi, uint _clk, uint _cs);
+bool pico_MAX31855_init(struct pico_MAX31855* thermocouple,
+						spi_inst_t*			  _spi_device,
+						uint				  _spi_baudrate,
+						uint				  _mosi,
+						uint				  _clk,
+						uint				  _cs);
 
 /*!
  *

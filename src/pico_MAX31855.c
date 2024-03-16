@@ -3,7 +3,7 @@
  *
  * @mainpage MAX31855 Thermocouple library C for Raspberry Pico C SDK
  *
- * @section intro_sec Introduction
+ * @section intro Introduction
  *
  * This is the documentation for the MAX31855 Thermocouple C library for
  * for Raspberry Pico C SDK.
@@ -25,18 +25,27 @@
  * @brief  Initialize a new pico_MAX31855 structure using hardware SPI.
  *
  * @param thermocouple A pointer to pico_MAX31855 structure.
+ * @param _spi_device A pointer to spi_inst_t, spi0 or spi1.
+ * @param _spi_baudrate Value of the SPI baudrate, maximum value 5 Mhz.
  * @param _mosi The pin to use for SPI Mosi.
  * @param _clk The pin to use for SPI Clock
  * @param _cs The pin to use for SPI Chip Select.
  *
  */
-bool pico_MAX31855_init(struct pico_MAX31855* thermocouple, uint _mosi, uint _clk, uint _cs)
+bool pico_MAX31855_init(struct pico_MAX31855* thermocouple,
+						spi_inst_t*			  _spi_device,
+						uint				  _spi_baudrate,
+						uint				  _mosi,
+						uint				  _clk,
+						uint				  _cs)
 {
-	thermocouple->mosi_pin	  = _mosi;
-	thermocouple->clk_pin	  = _clk;
-	thermocouple->cs_pin	  = _cs;
-	thermocouple->initialized = false;
-	thermocouple->faultMask	  = MAX31855_FAULT_ALL;
+	thermocouple->mosi_pin	   = _mosi;
+	thermocouple->clk_pin	   = _clk;
+	thermocouple->cs_pin	   = _cs;
+	thermocouple->spi_device   = _spi_device;
+	thermocouple->spi_baudrate = _spi_baudrate;
+	thermocouple->initialized  = false;
+	thermocouple->faultMask	   = MAX31855_FAULT_ALL;
 	return true;
 }
 
@@ -50,7 +59,8 @@ bool pico_MAX31855_init(struct pico_MAX31855* thermocouple, uint _mosi, uint _cl
  */
 bool pico_MAX31855_begin(struct pico_MAX31855* thermocouple)
 {
-	spi_init(spi0, 1000 * 1000);
+	// spi_init(spi0, 1000 * 1000);
+	spi_init(thermocouple->spi_device, thermocouple->spi_baudrate);
 
 	gpio_set_function(thermocouple->mosi_pin, GPIO_FUNC_SPI);
 	gpio_set_function(thermocouple->clk_pin, GPIO_FUNC_SPI);
@@ -230,7 +240,8 @@ uint32_t pico_MAX31855_spiread32(struct pico_MAX31855* thermocouple)
 	pico_MAX31855_cs_select(thermocouple);
 	sleep_ms(1);
 
-	spi_read_blocking(spi0, 0, buf, 4);
+	// spi_read_blocking(spi0, 0, buf, 4);
+	spi_read_blocking(thermocouple->spi_device, 0, buf, 4);
 	pico_MAX31855_cs_deselect(thermocouple);
 	sleep_ms(1);
 
