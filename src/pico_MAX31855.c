@@ -1,20 +1,6 @@
 /*!
+ *
  * @file pico_MAX31855.c
- *
- * @mainpage MAX31855 Thermocouple library C for Raspberry Pico C SDK
- *
- * @section intro Introduction
- *
- * This is the documentation for the MAX31855 Thermocouple C library for
- * for Raspberry Pico C SDK.
- *
- * @section author Author
- *
- * Lazarewicz Julien lazaj30@gmail.com
- *
- * @section license License
- *
- * BSD license, all text above must be included in any redistribution.
  *
  */
 

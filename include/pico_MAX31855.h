@@ -16,6 +16,8 @@
  *
  * BSD license, all text above must be included in any redistribution.
  *
+ * @section build Building examples
+ * \include{doc} build.dox
  */
 
 #include "hardware/spi.h"
