@@ -42,13 +42,18 @@ To build the examples, follow these steps:
     make
     ```
 
+## Documentation
+
+Documentation for the library can be found in the `documentation/html` folder.
+
 ## Compatibility
 
 This library is designed to work with the MAX31855 thermocouple-to-digital converter and RP2040 microcontroller unit using the Pico C/C++ SDK. Ensure proper wiring and compatibility before use.
 
 ## Credits
 
-This library was developed by lazaj30@gmail.com.
+This library was developed by [lazaj30@gmail.com](mailto:lazaj30@gmail.com).
+Use a little bit of the code from Adafruit.
 
 ## License
 
