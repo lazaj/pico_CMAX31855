@@ -1,3 +1,4 @@
 
 *.bck
 /build
+/documentation/html

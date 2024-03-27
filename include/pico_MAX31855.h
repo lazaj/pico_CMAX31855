@@ -5,7 +5,7 @@
  *
  * @section intro_sec Introduction
  *
- * This is the documentation for the MAX31855 Thermocouple library C for
+ * This is the documentation for the MAX31855 Thermocouple C library for
  * for Raspberry Pico C SDK.
  *
  * @section author Author
@@ -20,13 +20,13 @@
  * \include{doc} build.dox
  */
 
+#include <stdio.h>
 #include "hardware/spi.h"
 #include "math.h"
 #include "pico/binary_info.h"
 #include "pico/stdlib.h"
-#include <stdio.h>
 
-#define MAX31855_LIB_VERSION "0.0.1"
+#define MAX31855_LIB_VERSION "0.0.1"  ///< Library version
 
 #define MAX31855_FAULT_NONE (0x00)		 ///< Disable all fault checks
 #define MAX31855_FAULT_OPEN (0x01)		 ///< Enable open circuit fault check
@@ -142,7 +142,7 @@ void pico_MAX31855_setFaultChecks(struct pico_MAX31855* thermocouple, uint8_t fa
 
 /*!
  *
- *	@brief  Read 4 bytes (32 bits) from breakout over SPI.
+ *	@brief  Read 4 bytes (32 bits) from MAX31855 over SPI.
  *
  *	@param thermocouple A pointer to pico_MAX31855 structure.
  *	@return The raw 32 bit value read.

@@ -206,7 +206,7 @@ void pico_MAX31855_setFaultChecks(struct pico_MAX31855* thermocouple, uint8_t fa
 
 /*!
  *
- *	@brief  Read 4 bytes (32 bits) from breakout over SPI.
+ *	@brief  Read 4 bytes (32 bits) from MAX31855 over SPI.
  *
  *	@param thermocouple A pointer to pico_MAX31855 structure.
  *	@return The raw 32 bit value read.
