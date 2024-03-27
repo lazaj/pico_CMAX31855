@@ -1,4 +1,6 @@
 
 *.bck
 /build
-/documentation/html
+/.vscode
+/documentation/build.dox
+/documentation/Doxyfile
