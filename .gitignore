@@ -2,5 +2,5 @@
 *.bck
 /build
 /.vscode
-/documentation/build.dox
+/documentation/build_examples.dox
 /documentation/Doxyfile
